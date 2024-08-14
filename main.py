@@ -1,37 +1,43 @@
 #coding=utf-8
 import telebot
-import qrcode
-from data import *  
+import segno
+from data import *
 
-bot = telebot.TeleBot('6182241691:AAFl3lahEdNLQGp3hurvMI8JeYbAIRlHc54')
+bot = telebot.TeleBot('6947468533:AAH_5sm30S2Qotu7USQNCHxayc5H_POSGZY')
+markupA = telebot.types.ReplyKeyboardMarkup()
+buttonA = telebot.types.KeyboardButton('Ознакомился')
+markupA.row(buttonA)
+markupB = telebot.types.ReplyKeyboardMarkup()
+buttonB = telebot.types.KeyboardButton('/start')
+markupB.row(buttonB)
 
 @bot.message_handler(commands=['start'])
 def start(message):
     user_reg(message.from_user.id)
-    bot.send_message(message.chat.id, "Привет, это видео инструкция. Первое видео - как поворачивать катаясь - Поворот цапли.")
-    video = open('tsaplya.mp4', 'rb')
-    bot.send_video(message.chat.id, video)
-    bot.next_step_handler(message, step2)
+    bot.send_message(message.chat.id, "Привет, это видео инструкция. Первое видео - как поворачивать катаясь - Поворот цапли.", reply_markup=markupA)
+    video = open('one.mp4', 'rb')
+    bot.send_video(message.chat.id, video=video)
+    bot.register_next_step_handler(message, tstep)
 
-def 2step(message):
+def tstep(message):
     bot.send_message(message.chat.id, "Второе видео - как разворачиваться на месте - Робот Вертер.")
     video = open('verter.MOV', 'rb')
     bot.send_video(message.chat.id, video)
-    bot.next_step_handler(message, step3)
+    bot.register_next_step_handler(message,trstep)
 
-def 3step(message):
+def trstep(message):
     bot.send_message(message.chat.id, "Будте аккуратны, внимательно прочитайте правила безопасности:")
     photo = open('rules.jpg', 'rb')
     bot.send_photo(message.chat.id, photo)
-    bot.next_step_handler(message, step4)
+    bot.register_next_step_handler(message, fstep)
 
-def 4step(message):
+def fstep(message):
     bot.send_message(message.chat.id, "Вот ваш допуск, покажите его стюарду:")
-    data = f"{message.from_user.id}"
-    filename = f"{message.from_user.id}.png"
-    img = qrcode.make(data)
-    bot.send_photo(message.chat.id, img)
-    img.save(filename)
+    qrcode = segno.make_qr(message.from_user.id)
+    qrcode.save(f"{message.from_user.id}.png")
+    photo = open(f"{message.from_user.id}.png", 'rb')
+    bot.send_photo(message.chat.id, photo)
+    bot.send_message(message.chat.id, "Подписывайтесь, на канал первого в мире велоэллипса, чтобы сделать эллик лучше\nhttps://t.me/+dvijtech", reply_markup=markupB)
     
     
     
