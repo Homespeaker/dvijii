@@ -4,10 +4,10 @@ import segno
 from data import *
 
 bot = telebot.TeleBot('7400504311:AAEBXNsozrwUolbpc1MWM3P6EAOoR2VZ-zc')
-markupA = telebot.types.ReplyKeyboardMarkup()
+markupA = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
 buttonA = telebot.types.KeyboardButton('Ознакомился')
 markupA.row(buttonA)
-markupB = telebot.types.ReplyKeyboardMarkup()
+markupB = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
 buttonB = telebot.types.KeyboardButton('/start')
 markupB.row(buttonB)
 
@@ -16,13 +16,13 @@ def start(message):
     user_reg(message.from_user.id)
     bot.send_message(message.chat.id, "Привет, это видео инструкция. Первое видео - как поворачивать катаясь - Поворот цапли.", reply_markup=markupA)
     video = open('one.mp4', 'rb')
-    bot.send_video(message.chat.id, video=video)
+    bot.send_video(message.chat.id, video=video, width=464, height=848)
     bot.register_next_step_handler(message, tstep)
 
 def tstep(message):
     bot.send_message(message.chat.id, "Второе видео - как разворачиваться на месте - Робот Вертер.")
     video = open('verter.MOV', 'rb')
-    bot.send_video(message.chat.id, video)
+    bot.send_video(message.chat.id, video, width=464, height=848)
     bot.register_next_step_handler(message,trstep)
 
 def trstep(message):
