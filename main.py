@@ -3,7 +3,7 @@ import telebot
 import segno
 from data import *
 
-bot = telebot.TeleBot('7400504311:AAEBXNsozrwUolbpc1MWM3P6EAOoR2VZ-zc')
+bot = telebot.TeleBot('7619951368:AAGVQNCegA9JZMCyBAmdQCIPke_PTDefcyE')
 markupA = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
 buttonA = telebot.types.KeyboardButton('Ознакомился')
 markupA.row(buttonA)
